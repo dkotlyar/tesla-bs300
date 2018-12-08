@@ -1,0 +1,7 @@
+re:.*\.exe$
+re:.*\.cache$
+re:.*\.dll$
+re:.*/bin/.*
+re:.*/.vs/.*
+re:.*/obj/.*
+re:.*/Debug/.*
