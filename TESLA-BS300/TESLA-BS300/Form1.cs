@@ -34,6 +34,13 @@ namespace TESLA_BS300
         private int imageHeight_unit = 625;
         private string measurementUnit = "px";
 
+        private double? minKadrVoltage = null;
+        private double? maxKadrVoltage = null;
+        private double? minRowVoltage = null;
+        private double? maxRowVoltage = null;
+        private double? minVideoVoltage = null;
+        private double? maxVideoVoltage = null;
+
         private int packageCount = 0;
 
         Bitmap teslaImage;
@@ -505,7 +512,7 @@ namespace TESLA_BS300
             BitmapData bitmapData = teslaImage.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
             byte[] rgbValues = new byte[Math.Abs(bitmapData.Stride) * height];
             System.Runtime.InteropServices.Marshal.Copy(bitmapData.Scan0, rgbValues, 0, rgbValues.Length);
-
+           
             try
             {
                 #region Координаты пикселей закодированы напряжением kadr и row
@@ -515,12 +522,22 @@ namespace TESLA_BS300
                     double row = pModule.AdcToVoltage(channels[j, 1]);
                     double video = pModule.AdcToVoltage(channels[j, 2]);
 
+                    // Корректировка нелинейного сжатия-растяжения изображения по горизонтали
+                    row = 1.39823 + 0.265127 * row + 0.799727 * Math.Log(row);
+
+                    if (minKadrVoltage == null || kadr < minKadrVoltage) minKadrVoltage = kadr;
+                    if (maxKadrVoltage == null || kadr > maxKadrVoltage) maxKadrVoltage = kadr;
+                    if (minRowVoltage == null || row < minRowVoltage) minRowVoltage = row;
+                    if (maxRowVoltage == null || row > maxRowVoltage) maxRowVoltage = row;
+                    if (minVideoVoltage == null || video < minVideoVoltage) minVideoVoltage = video;
+                    if (maxVideoVoltage == null || video > maxVideoVoltage) maxVideoVoltage = video;
+
                     // Обратное кодирование координат
-                    int imageCursorY = (height - 1) - (int)MapConstrain(kadr, (double)kadrFinish_mV / 1000, (double)kadrStart_mV / 1000, 0, height - 1);
-                    int imageCursorX = (width - 1) - (int)MapConstrain(row, (double)rowFinish_mV / 1000, (double)rowStart_mV / 1000, 0, width - 1);
+                    //int imageCursorY = (height - 1) - (int)MapConstrain(kadr, (double)kadrFinish_mV / 1000, (double)kadrStart_mV / 1000, 0, height - 1);
+                    //int imageCursorX = (width - 1) - (int)MapConstrain(row, (double)rowFinish_mV / 1000, (double)rowStart_mV / 1000, 0, width - 1);
                     // Прямое кодирование координат
-                    //int imageCursorY = (int)MapConstrain(kadr, (double)kadrFinish_mV / 1000, (double)kadrStart_mV / 1000, 0, height - 1);
-                    //int imageCursorX = (int)MapConstrain(row, (double)rowFinish_mV / 1000, (double)rowStart_mV / 1000, 0, width - 1);
+                    int imageCursorY = (int)MapConstrain(kadr, (double)kadrFinish_mV / 1000, (double)kadrStart_mV / 1000, 0, height - 1);
+                    int imageCursorX = (int)MapConstrain(row, (double)rowFinish_mV / 1000, (double)rowStart_mV / 1000, 0, width - 1);
 
                     byte videoPixel = (byte)MapConstrain(video, (double)imageBlack_mV / 1000, (double)imageWhite_mV / 1000, 0, 255);
                     rgbValues[(3 * width + 1) * imageCursorY + 3 * imageCursorX + 0] = videoPixel;
@@ -602,7 +619,7 @@ namespace TESLA_BS300
                 System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, bitmapData.Scan0, rgbValues.Length);
                 teslaImage.UnlockBits(bitmapData);
             }
-            
+
             RedrawAnalysisShapes(true);
         }
 
@@ -729,6 +746,12 @@ namespace TESLA_BS300
 
         private double Constrain(double x, double a, double b)
         {
+            if (a > b)
+            {
+                double tmp = a;
+                a = b;
+                b = tmp;
+            }
             return Math.Max(Math.Min(x, b), a);
         }
 
@@ -933,11 +956,39 @@ namespace TESLA_BS300
         {
             if (e2010BackgroundWorker.IsBusy)
             {
-                ClearImage();
+                //ClearImage();
+                MessageBox.Show("Остановите сбор данных и повторите попытку снова.");
             } else
             {
                 RedrawImage();
             }
+        }
+
+        private void signalCharacterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                String.Format(
+                    "Начало кадрового сигнала {0} мВ\n" +
+                    "Конец кадрового сигнала {1} мВ\n" +
+                    "Начало строчного сигнала {2} мВ\n" +
+                    "Конец строчного сигнала {3} мВ\n" +
+                    "Минимум видеосигнала {4} мВ\n" +
+                    "Максимум видеосигнала {5} мВ\n",
+                    minKadrVoltage != null ? ((int)(minKadrVoltage * 1000)).ToString() : "н/д",
+                    maxKadrVoltage != null ? ((int)(maxKadrVoltage * 1000)).ToString() : "н/д",
+                    minRowVoltage != null ? ((int)(minRowVoltage * 1000)).ToString() : "н/д",
+                    maxRowVoltage != null ? ((int)(maxRowVoltage * 1000)).ToString() : "н/д",
+                    minVideoVoltage != null ? ((int)(minVideoVoltage * 1000)).ToString() : "н/д",
+                    maxVideoVoltage != null ? ((int)(maxVideoVoltage * 1000)).ToString() : "н/д"),
+                "Характеристики сигналов");
+        }
+
+        private void signalCharacterResetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            minKadrVoltage = null;
+            maxKadrVoltage = null;
+            minRowVoltage = null;
+            maxRowVoltage = null;
         }
     }
 }
