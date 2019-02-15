@@ -523,7 +523,8 @@ namespace TESLA_BS300
                     double video = pModule.AdcToVoltage(channels[j, 2]);
 
                     // Корректировка нелинейного сжатия-растяжения изображения по горизонтали
-                    row = 1.39823 + 0.265127 * row + 0.799727 * Math.Log(row);
+                    //row = 1.39823 + 0.265127 * row + 0.799727 * Math.Log(row);
+                    //row = 0.801461 + 1.13118 * row - 0.304856 * row * row + 0.038662 * row * row * row + 0.498053 * Math.Log(row);
 
                     if (minKadrVoltage == null || kadr < minKadrVoltage) minKadrVoltage = kadr;
                     if (maxKadrVoltage == null || kadr > maxKadrVoltage) maxKadrVoltage = kadr;
@@ -533,11 +534,11 @@ namespace TESLA_BS300
                     if (maxVideoVoltage == null || video > maxVideoVoltage) maxVideoVoltage = video;
 
                     // Обратное кодирование координат
-                    //int imageCursorY = (height - 1) - (int)MapConstrain(kadr, (double)kadrFinish_mV / 1000, (double)kadrStart_mV / 1000, 0, height - 1);
-                    //int imageCursorX = (width - 1) - (int)MapConstrain(row, (double)rowFinish_mV / 1000, (double)rowStart_mV / 1000, 0, width - 1);
+                    int imageCursorY = (height - 1) - (int)MapConstrain(kadr, (double)kadrFinish_mV / 1000, (double)kadrStart_mV / 1000, 0, height - 1);
+                    int imageCursorX = (width - 1) - (int)MapConstrain(row, (double)rowFinish_mV / 1000, (double)rowStart_mV / 1000, 0, width - 1);
                     // Прямое кодирование координат
-                    int imageCursorY = (int)MapConstrain(kadr, (double)kadrFinish_mV / 1000, (double)kadrStart_mV / 1000, 0, height - 1);
-                    int imageCursorX = (int)MapConstrain(row, (double)rowFinish_mV / 1000, (double)rowStart_mV / 1000, 0, width - 1);
+                    //int imageCursorY = (int)MapConstrain(kadr, (double)kadrFinish_mV / 1000, (double)kadrStart_mV / 1000, 0, height - 1);
+                    //int imageCursorX = (int)MapConstrain(row, (double)rowFinish_mV / 1000, (double)rowStart_mV / 1000, 0, width - 1);
 
                     byte videoPixel = (byte)MapConstrain(video, (double)imageBlack_mV / 1000, (double)imageWhite_mV / 1000, 0, 255);
                     rgbValues[(3 * width + 1) * imageCursorY + 3 * imageCursorX + 0] = videoPixel;
