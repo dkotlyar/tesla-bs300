@@ -133,6 +133,11 @@
             0,
             0,
             0});
+            this.kadrStart_mV.Minimum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            -2147483648});
             this.kadrStart_mV.Name = "kadrStart_mV";
             this.kadrStart_mV.Size = new System.Drawing.Size(120, 20);
             this.kadrStart_mV.TabIndex = 5;
@@ -161,6 +166,11 @@
             0,
             0,
             0});
+            this.kadrFinish_mV.Minimum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            -2147483648});
             this.kadrFinish_mV.Name = "kadrFinish_mV";
             this.kadrFinish_mV.Size = new System.Drawing.Size(120, 20);
             this.kadrFinish_mV.TabIndex = 7;
@@ -175,6 +185,11 @@
             0,
             0,
             0});
+            this.rowFinish_mV.Minimum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            -2147483648});
             this.rowFinish_mV.Name = "rowFinish_mV";
             this.rowFinish_mV.Size = new System.Drawing.Size(120, 20);
             this.rowFinish_mV.TabIndex = 11;
@@ -198,6 +213,11 @@
             0,
             0,
             0});
+            this.rowStart_mV.Minimum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            -2147483648});
             this.rowStart_mV.Name = "rowStart_mV";
             this.rowStart_mV.Size = new System.Drawing.Size(120, 20);
             this.rowStart_mV.TabIndex = 9;
@@ -226,6 +246,11 @@
             0,
             0,
             0});
+            this.imageBlack_mV.Minimum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            -2147483648});
             this.imageBlack_mV.Name = "imageBlack_mV";
             this.imageBlack_mV.Size = new System.Drawing.Size(120, 20);
             this.imageBlack_mV.TabIndex = 13;
@@ -280,6 +305,11 @@
             0,
             0,
             0});
+            this.imageWhite_mV.Minimum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            -2147483648});
             this.imageWhite_mV.Name = "imageWhite_mV";
             this.imageWhite_mV.Size = new System.Drawing.Size(120, 20);
             this.imageWhite_mV.TabIndex = 17;
