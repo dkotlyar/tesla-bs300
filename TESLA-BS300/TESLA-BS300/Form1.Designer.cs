@@ -62,12 +62,8 @@
             this.horizontalLine = new System.Windows.Forms.PictureBox();
             this.verticalLine = new System.Windows.Forms.PictureBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.verticalRulerPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.horizontalRulerPictureBox)).BeginInit();
@@ -75,8 +71,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.teslaStatePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.horizontalLine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.verticalLine)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // e2010BackgroundWorker
@@ -387,16 +381,6 @@
             this.label4.Text = "Позиция курсора:";
             this.label4.Visible = false;
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(616, 341);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(172, 71);
-            this.textBox1.TabIndex = 17;
-            this.textBox1.Visible = false;
-            // 
             // openFileDialog
             // 
             this.openFileDialog.FileName = "tesla-bs300.bmp";
@@ -405,63 +389,11 @@
             // 
             this.saveFileDialog.FileName = "tesla-bs300.bmp";
             // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDown1.DecimalPlaces = 4;
-            this.numericUpDown1.Location = new System.Drawing.Point(673, 418);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(95, 20);
-            this.numericUpDown1.TabIndex = 18;
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDown2.DecimalPlaces = 4;
-            this.numericUpDown2.Location = new System.Drawing.Point(550, 418);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDown2.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(100, 20);
-            this.numericUpDown2.TabIndex = 19;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(438, 341);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox2.Size = new System.Drawing.Size(172, 71);
-            this.textBox2.TabIndex = 20;
-            this.textBox2.Visible = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.numericUpDown2);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.verticalLine);
             this.Controls.Add(this.horizontalLine);
@@ -489,8 +421,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.teslaStatePictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.horizontalLine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.verticalLine)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -523,7 +453,6 @@
         private System.Windows.Forms.ToolStripMenuItem distanceMeasurementToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem areaMeasurementToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearMeasurementToolStripMenuItem;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.ToolStripMenuItem openImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearImageToolStripMenuItem;
@@ -535,9 +464,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem signalCharacterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem signalCharacterResetToolStripMenuItem;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.TextBox textBox2;
     }
 }
 
