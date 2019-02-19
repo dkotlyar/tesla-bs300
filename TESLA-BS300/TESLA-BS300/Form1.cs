@@ -17,7 +17,7 @@ namespace TESLA_BS300
         private const string xmlPropertiesFile = "properties.xml";
         private LE2010 pModule;
 
-        private const string buildNumber = "20190214";
+        private const string buildNumber = "20190219";
 
         private int imageWidth_px = 833;
         private int imageHeight_px = 625;
