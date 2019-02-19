@@ -18,7 +18,7 @@ namespace TESLA_BS300
             Size = size;
         }
 
-        public SizeF Size { get; set; }
+        public new SizeF Size { get; set; }
         public new Brush Brush
         {
             get
