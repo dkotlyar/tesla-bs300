@@ -409,7 +409,6 @@ namespace TESLA_BS300
             try
             {
                 WriteLine("Device opened in slot {0}", pModule.openSlot);
-                WriteLine("Module name: \"{0}\"", pModule.GetModuleName());
                 WriteLine("USB speed: {0}", pModule.PrintUsbSpeed());
 
                 pModule.LoadModule();
