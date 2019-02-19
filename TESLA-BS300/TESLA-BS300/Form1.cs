@@ -17,7 +17,7 @@ namespace TESLA_BS300
         private const string xmlPropertiesFile = "properties.xml";
         private LE2010 pModule;
 
-        private const string buildNumber = "20190214";
+        private const string buildNumber = "20190219";
 
         private int imageWidth_px = 833;
         private int imageHeight_px = 625;
@@ -409,7 +409,6 @@ namespace TESLA_BS300
             try
             {
                 WriteLine("Device opened in slot {0}", pModule.openSlot);
-                WriteLine("Module name: \"{0}\"", pModule.GetModuleName());
                 WriteLine("USB speed: {0}", pModule.PrintUsbSpeed());
 
                 pModule.LoadModule();
@@ -437,7 +436,6 @@ namespace TESLA_BS300
                 int reqNumber = 0;
                 while (true)
                 {
-                    //System.Threading.Thread.Sleep(5);
                     if (((BackgroundWorker)sender).CancellationPending)
                         break;
 
@@ -446,9 +444,7 @@ namespace TESLA_BS300
                     short[] res = (pModule.WaitResponse(req[reqNumber ^ 1]));
                     short[,] channels = pModule.SplitToChannels(res);
 
-                    //ImageProcessingSlow(channels);
                     ImageProcessing(channels);
-                    //ImageProcessingFast(channels);
 
                     ((BackgroundWorker)sender).ReportProgress(0, new Bitmap(teslaImage));
 
@@ -480,28 +476,6 @@ namespace TESLA_BS300
 
             tESLABS300ToolStripMenuItem.Checked = false;
             teslaStatePictureBox.Image = Properties.Resources.red_light;
-        }
-
-        private void ImageProcessingSlow(short[,] channels)
-        {
-            for (int j = 0; j < channels.GetLength(0); j++)
-            {
-                if (imageCursorX >= imageWidth_px)
-                {
-                    imageCursorX = 0;
-                    imageCursorY++;
-                    if (imageCursorY >= imageHeight_px)
-                    {
-                        imageCursorY = 0;
-                    }
-                }
-
-                Random r = new Random();
-                teslaImage.SetPixel(imageCursorX, imageCursorY, Color.FromArgb(r.Next(255), r.Next(255), r.Next(255)));
-
-                imageCursorX++;
-                packageCount++;
-            }
         }
 
         private void ImageProcessing(short[,] channels)
@@ -622,94 +596,6 @@ namespace TESLA_BS300
             }
 
             RedrawAnalysisShapes(true);
-        }
-
-        private void ImageProcessingFast(short[,] channels)
-        {
-            byte[,,] rgbValues = BitmapToByteRgbQ(teslaImage);
-
-            for (int j = 0; j < channels.GetLength(0); j++)
-            {
-                if (imageCursorX >= imageWidth_px)
-                {
-                    imageCursorX = 0;
-                    imageCursorY++;
-                    if (imageCursorY >= imageHeight_px)
-                    {
-                        imageCursorY = 0;
-                    }
-                }
-
-                Random r = new Random();
-                rgbValues[0, imageCursorY, imageCursorX] = (byte)r.Next(255);
-                rgbValues[1, imageCursorY, imageCursorX] = (byte)r.Next(255);
-                rgbValues[2, imageCursorY, imageCursorX] = (byte)r.Next(255);
-
-                imageCursorX++;
-                packageCount++;
-            }
-
-            teslaImage = ByteRgbQToBitmap(rgbValues, teslaImage.Width, teslaImage.Height);
-        }
-
-        private unsafe byte[,,] BitmapToByteRgbQ(Bitmap bmp)
-        {
-            int width = bmp.Width,
-                height = bmp.Height;
-            byte[,,] res = new byte[3, height, width];
-            BitmapData bd = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-            try
-            {
-                byte* curpos;
-                fixed (byte* _res = res)
-                {
-                    byte* _r = _res, _g = _res + width * height, _b = _res + 2 * width * height;
-                    for (int h = 0; h < height; h++)
-                    {
-                        curpos = ((byte*)bd.Scan0) + h * bd.Stride;
-                        for (int w = 0; w < width; w++)
-                        {
-                            *_b = *(curpos++); ++_b;
-                            *_g = *(curpos++); ++_g;
-                            *_r = *(curpos++); ++_r;
-                        }
-                    }
-                }
-            }
-            finally
-            {
-                bmp.UnlockBits(bd);
-            }
-            return res;
-        }
-
-        private unsafe Bitmap ByteRgbQToBitmap(byte[,,] res, int width, int height)
-        {
-            Bitmap bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
-            BitmapData bd = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-            try
-            {
-                byte* curpos;
-                fixed (byte* _res = res)
-                {
-                    byte* _r = _res, _g = _res + width * height, _b = _res + 2 * width * height;
-                    for (int h = 0; h < height; h++)
-                    {
-                        curpos = ((byte*)bd.Scan0) + h * bd.Stride;
-                        for (int w = 0; w < width; w++)
-                        {
-                            *(curpos++) = *_b; ++_b;
-                            *(curpos++) = * _g; ++_g;
-                            *(curpos++) = *_r; ++_r;
-                        }
-                    }
-                }
-            }
-            finally
-            {
-                bmp.UnlockBits(bd);
-            }
-            return bmp;
         }
 
         Stopwatch sw = new Stopwatch();
